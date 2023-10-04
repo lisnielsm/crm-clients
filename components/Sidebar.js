@@ -62,6 +62,7 @@ const Sidebar = () => {
 							<button
 								type="button"
 								className="text-white w-full text-left p-2"
+								onClick={cerrarSidebar}
 							>
 								<Link href="/">Clientes</Link>
 							</button>
@@ -76,6 +77,7 @@ const Sidebar = () => {
 							<button
 								type="button"
 								className="text-white w-full text-left p-2"
+								onClick={cerrarSidebar}
 							>
 								<Link href="/pedidos">Pedidos</Link>
 							</button>
@@ -90,6 +92,7 @@ const Sidebar = () => {
 							<button
 								type="button"
 								className="text-white w-full text-left p-2"
+								onClick={cerrarSidebar}
 							>
 								<Link href="/productos">Productos</Link>
 							</button>
@@ -114,6 +117,7 @@ const Sidebar = () => {
 							<button
 								type="button"
 								className="text-white w-full text-left p-2"
+								onClick={cerrarSidebar}
 							>
 								<Link href="/mejoresvendedores">
 									Mejores Vendedores
@@ -130,6 +134,7 @@ const Sidebar = () => {
 							<button
 								type="button"
 								className="text-white w-full text-left p-2"
+								onClick={cerrarSidebar}
 							>
 								<Link href="/mejoresclientes">
 									Mejores Clientes
@@ -168,9 +173,9 @@ const Sidebar = () => {
 	return (
 		<>
 		<aside
-			className={`fixed top-0 left-0 h-full sm:hidden duration-300 ${
-				open ? "translate-x-0" : "-translate-x-full"
-			} w-full sm:min-w-[250px] sm:w-[250px] bg-gray-800  text-white sm:min-h-screen p-5`}
+			className={`fixed top-0 left-0 h-full sm:hidden duration-300 z-50
+				${ open ? "translate-x-0" : "-translate-x-full"	}
+				w-full sm:min-w-[250px] sm:w-[250px] bg-gray-800  text-white sm:min-h-screen p-5`}
 		>
 			{opcionesMenu()}
 		</aside>
