@@ -30,6 +30,13 @@ const Sidebar = () => {
 		router.push("/login");
 	};
 
+	const navegarAlLink = (link) => {
+		cerrarSidebar();
+		setTimeout(() => {
+			router.push(link);
+		}, 300);
+	};
+
 	const opcionesMenu = () => {
 		return (
 			<>
@@ -62,9 +69,9 @@ const Sidebar = () => {
 							<button
 								type="button"
 								className="text-white w-full text-left p-2"
-								onClick={cerrarSidebar}
+								onClick={() => navegarAlLink("/")}
 							>
-								<Link href="/">Clientes</Link>
+								<span>Clientes</span>
 							</button>
 						</li>
 						<li
@@ -77,9 +84,9 @@ const Sidebar = () => {
 							<button
 								type="button"
 								className="text-white w-full text-left p-2"
-								onClick={cerrarSidebar}
+								onClick={() => navegarAlLink("/pedidos")}
 							>
-								<Link href="/pedidos">Pedidos</Link>
+								<span>Pedidos</span>
 							</button>
 						</li>
 						<li
@@ -92,9 +99,9 @@ const Sidebar = () => {
 							<button
 								type="button"
 								className="text-white w-full text-left p-2"
-								onClick={cerrarSidebar}
+								onClick={() => navegarAlLink("/productos")}
 							>
-								<Link href="/productos">Productos</Link>
+								<span>Productos</span>
 							</button>
 						</li>
 					</div>
@@ -117,11 +124,9 @@ const Sidebar = () => {
 							<button
 								type="button"
 								className="text-white w-full text-left p-2"
-								onClick={cerrarSidebar}
+								onClick={() => navegarAlLink("/mejoresvendedores")}
 							>
-								<Link href="/mejoresvendedores">
-									Mejores Vendedores
-								</Link>
+								<span>Mejores Vendedores</span>
 							</button>
 						</li>
 						<li
@@ -134,11 +139,9 @@ const Sidebar = () => {
 							<button
 								type="button"
 								className="text-white w-full text-left p-2"
-								onClick={cerrarSidebar}
+								onClick={() => navegarAlLink("/mejoresclientes")}
 							>
-								<Link href="/mejoresclientes">
-									Mejores Clientes
-								</Link>
+								<span>Mejores Clientes</span>
 							</button>
 						</li>
 						<li className="block sm:hidden rounded-md mb-2 hover:bg-blue-800">
