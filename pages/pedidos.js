@@ -31,6 +31,25 @@ const OBTENER_PEDIDOS = gql`
 const Pedidos = () => {
 	const { data, loading, error } = useQuery(OBTENER_PEDIDOS);
 
+	if (loading) {
+		return (
+			<Layout>
+				<h1 className="text-2xl text-gray-800">Pedidos</h1>
+			</Layout>
+		);
+	}
+
+	if (error) {
+		return (
+			<Layout>
+				<h1 className="text-2xl text-gray-800">Pedidos</h1>
+				<p className="mt-5 text-center text-xl">
+					Ocurrió un error al cargar los Pedidos
+				</p>
+			</Layout>
+		);
+	}
+
 	return (
 		<div>
 			<Layout>
@@ -59,17 +78,14 @@ const Pedidos = () => {
 					</button>
 				</Link>
 
-				{loading ? (
-					<p>Cargando...</p>
-				) : data?.obtenerPedidosVendedor?.length === 0 ? (
-					<p className="mt-5 text-center text-2xl">No hay pedidos aún</p>
-				) : (
-					data?.obtenerPedidosVendedor?.map((pedido) => (
-						<Pedido
-							key={pedido.id}
-							pedido={pedido}
-						/>
+				{data.obtenerPedidosVendedor && data.obtenerPedidosVendedor.length > 0 ? (
+					data.obtenerPedidosVendedor.map((pedido) => (
+						<Pedido key={pedido.id} pedido={pedido} />
 					))
+				) : (
+					<p className="mt-5 text-center text-xl">
+						No hay pedidos aún
+					</p>
 				)}
 			</Layout>
 		</div>

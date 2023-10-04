@@ -1,9 +1,14 @@
 import { gql, useQuery } from "@apollo/client";
 import React, { useEffect } from "react";
 import {
-	Bar, BarChart, CartesianGrid, Legend,
-	ResponsiveContainer, Tooltip, XAxis,
-	YAxis
+	Bar,
+	BarChart,
+	CartesianGrid,
+	Legend,
+	ResponsiveContainer,
+	Tooltip,
+	XAxis,
+	YAxis,
 } from "recharts";
 
 import Layout from "../components/Layout";
@@ -21,14 +26,15 @@ const MEJORES_CLIENTES = gql`
 `;
 
 const MejoresClientes = () => {
-	const { data, loading, error, startPolling, stopPolling } = useQuery(MEJORES_CLIENTES);
+	const { data, loading, error, startPolling, stopPolling } =
+		useQuery(MEJORES_CLIENTES);
 
-    useEffect(() => {
-        startPolling(1000);
-        return () => {
-            stopPolling();
-        }
-    }, [startPolling, stopPolling])
+	useEffect(() => {
+		startPolling(1000);
+		return () => {
+			stopPolling();
+		};
+	}, [startPolling, stopPolling]);
 
 	if (loading) {
 		return (
@@ -38,7 +44,18 @@ const MejoresClientes = () => {
 		);
 	}
 
-    const { mejoresClientes } = data;
+	if (error) {
+		return (
+			<Layout>
+				<h1 className="text-2xl text-gray-800">Mejores Clientes</h1>
+				<p className="mt-5 text-center text-xl">
+					Ocurrió un error al cargar los clientes
+				</p>
+			</Layout>
+		);
+	}
+
+	const { mejoresClientes } = data;
 
 	const clienteGrafica = [];
 
@@ -53,26 +70,30 @@ const MejoresClientes = () => {
 		<Layout>
 			<h1 className="text-2xl text-gray-800">Mejores Clientes</h1>
 
-			<div className="mt-10" style={{ height: 500, maxWidth: 600 }}>
-				<ResponsiveContainer width="100%" height="100%">
-					<BarChart
-						data={clienteGrafica}
-						margin={{
-							top: 5,
-							right: 30,
-							left: 20,
-							bottom: 5,
-						}}
-					>
-						<CartesianGrid strokeDasharray="3 3" />
-						<XAxis dataKey="nombre" />
-						<YAxis />
-						<Tooltip />
-						<Legend />
-						<Bar dataKey="Total" fill="#3182CE" />
-					</BarChart>
-				</ResponsiveContainer>
-			</div>
+			{clienteGrafica.length > 0 ? (
+				<div className="mt-10" style={{ height: 500, maxWidth: 600 }}>
+					<ResponsiveContainer width="100%" height="100%">
+						<BarChart
+							data={clienteGrafica}
+							margin={{
+								top: 5,
+								right: 30,
+								left: 20,
+								bottom: 5,
+							}}
+						>
+							<CartesianGrid strokeDasharray="3 3" />
+							<XAxis dataKey="nombre" />
+							<YAxis />
+							<Tooltip />
+							<Legend />
+							<Bar dataKey="Total" fill="#3182CE" />
+						</BarChart>
+					</ResponsiveContainer>
+				</div>
+			) : (
+				<p className="mt-5 text-center text-xl">No hay clientes</p>
+			)}
 		</Layout>
 	);
 };

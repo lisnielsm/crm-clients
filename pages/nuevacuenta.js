@@ -1,5 +1,6 @@
 import { gql, useMutation } from "@apollo/client";
 import { useFormik } from "formik";
+import Link from "next/link";
 import { useRouter } from "next/router";
 import React from "react";
 import * as Yup from "yup";
@@ -200,6 +201,14 @@ const NuevaCuenta = () => {
 								<p>{formik.errors.password}</p>
 							</div>
 						) : null}
+
+						<div className="mt-4">
+							<Link href="/login">
+								<span className="text-blue-600 hover:text-blue-800 visited:text-purple-600 cursor-pointer">
+									Volver al login
+								</span>
+							</Link>
+						</div>
 
 						<button
 							type="submit"

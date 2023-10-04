@@ -109,6 +109,23 @@ const EditarProducto = () => {
 		);
 	};
 
+	if(loading ) {
+		return (
+			<Layout>
+				<h1 className="text-2xl text-gray-800">Editar Producto</h1>
+			</Layout>
+		)
+	}
+
+	if(error) {
+		return (
+			<Layout>
+				<h1 className="text-2xl text-gray-800">Editar Producto</h1>
+				<p className="mt-5 text-center text-xl">Ocurrió un error al cargar el producto</p>
+			</Layout>
+		)
+	}
+
 	return (
 		<Layout>
 			<h1 className="text-2xl text-gray-800">Editar Producto</h1>

@@ -1,5 +1,6 @@
 import { gql, useMutation } from "@apollo/client";
 import { useFormik } from "formik";
+import Link from "next/link";
 import { useRouter } from "next/router";
 import React from "react";
 import * as Yup from "yup";
@@ -53,7 +54,7 @@ const Login = () => {
 
 				setMensaje("Autenticando...");
 				setTipoMensaje("exito");
-				
+
 				// Guardar token en localstorage
 				setTimeout(() => {
 					const { token } = data.autenticarUsuario;
@@ -65,7 +66,6 @@ const Login = () => {
 					setTipoMensaje("");
 					router.push("/");
 				}, 2000);
-
 			} catch (error) {
 				setMensaje(error.message.replace("GraphQL error: ", ""));
 				setTipoMensaje("error");
@@ -80,18 +80,24 @@ const Login = () => {
 	const mostrarMensaje = () => {
 		return (
 			<div className="bg-white py-2 px-3 w-full my-3 max-w-sm text-center mx-auto">
-				<p 
-					className={ tipoMensaje === "error" ? "text-red-500" : tipoMensaje === "exito" ? "text-green-500" : ""}
-				>{mensaje}</p>
+				<p
+					className={
+						tipoMensaje === "error"
+							? "text-red-500"
+							: tipoMensaje === "exito"
+							? "text-green-500"
+							: ""
+					}
+				>
+					{mensaje}
+				</p>
 			</div>
 		);
 	};
 
 	return (
 		<Layout>
-			<h1 className="text-center text-white text-2xl">
-				Login
-			</h1>
+			<h1 className="text-center text-white text-2xl">Login</h1>
 
 			{mensaje && mostrarMensaje()}
 
@@ -152,6 +158,14 @@ const Login = () => {
 								<p>{formik.errors.password}</p>
 							</div>
 						) : null}
+
+						<div className="mt-4">
+							<Link href="/nuevacuenta">
+								<span className="text-blue-600 hover:text-blue-800 visited:text-purple-600 cursor-pointer">
+									Crear nueva cuenta
+								</span>
+							</Link>
+						</div>
 
 						<button
 							type="submit"

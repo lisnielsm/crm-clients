@@ -21,6 +21,25 @@ const Productos = () => {
 	// Consultar los productos
 	const { data, loading, error } = useQuery(OBTENER_PRODUCTOS);
 
+	if (loading) {
+		return (
+			<Layout>
+				<h1 className="text-2xl text-gray-800">Productos</h1>
+			</Layout>
+		);
+	}
+
+	if (error) {
+		return (
+			<Layout>
+				<h1 className="text-2xl text-gray-800">Productos</h1>
+				<p className="mt-5 text-center text-xl">
+					Ocurrió un error al cargar los Productos
+				</p>
+			</Layout>
+		);
+	}
+
 	return (
 		<div>
 			<Layout>
@@ -49,7 +68,7 @@ const Productos = () => {
 					</button>
 				</Link>
 
-				{!loading && data.obtenerProductos ? (
+				{data.obtenerProductos && data.obtenerProductos.length > 0 ? (
 					<>
 						<div className="hidden lg:block">
 							<table className="table-auto shadow-md mt-10 w-full w-lg">
@@ -88,7 +107,11 @@ const Productos = () => {
 							))}
 						</div>
 					</>
-				) : null}
+				) : (
+					<p className="mt-5 text-center text-xl">
+						Aún no hay productos
+					</p>
+				)}
 			</Layout>
 		</div>
 	);

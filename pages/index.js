@@ -28,6 +28,23 @@ export default function Index() {
 		router.push("/login");
 	}
 
+	if(loading ) {
+		return (
+			<Layout>
+				<h1 className="text-2xl text-gray-800">Clientes</h1>
+			</Layout>
+		)
+	}
+
+	if(error) {
+		return (
+			<Layout>
+				<h1 className="text-2xl text-gray-800">Clientes</h1>
+				<p className="mt-5 text-center text-xl">Ocurrió un error al cargar los clientes</p>
+			</Layout>
+		)
+	}
+
 	return (
 		<div>
 			<Layout>
@@ -56,7 +73,7 @@ export default function Index() {
 					</button>
 				</Link>
 
-				{!loading && data?.obtenerClientesVendedor ? (
+				{data.obtenerClientesVendedor && data.obtenerClientesVendedor.length > 0 ? (
 					<>
 						<div className="hidden lg:block">
 							<table className="table-auto shadow-md mt-10 w-full w-lg">
@@ -99,7 +116,11 @@ export default function Index() {
 							))}
 						</div>
 					</>
-				) : null}
+				) : (
+					<p className="mt-5 text-center text-xl">
+						Aún no tienes clientes
+					</p>
+				)}
 			</Layout>
 		</div>
 	);

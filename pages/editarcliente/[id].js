@@ -34,9 +34,7 @@ const ACTUALIZAR_CLIENTE = gql`
 const EditarCliente = () => {
 	//obtener el ID actual
 	const router = useRouter();
-	const {
-		query: { id },
-	} = router;
+	const { query: { id } } = router;
 
 	// Consultar para obtener el cliente
 	const { data, loading, error } = useQuery(OBTENER_CLIENTE, {
@@ -114,6 +112,23 @@ const EditarCliente = () => {
 			</div>
 		);
 	};
+
+	if(loading ) {
+		return (
+			<Layout>
+				<h1 className="text-2xl text-gray-800">Editar Cliente</h1>
+			</Layout>
+		)
+	}
+
+	if(error) {
+		return (
+			<Layout>
+				<h1 className="text-2xl text-gray-800">Editar Cliente</h1>
+				<p className="mt-5 text-center text-xl">Ocurrió un error al cargar el cliente</p>
+			</Layout>
+		)
+	}
 
 	return (
 		<Layout>
