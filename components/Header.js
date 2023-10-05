@@ -14,7 +14,7 @@ const OBTENER_USUARIO = gql`
 	}
 `;
 
-const Header = ({ props }) => {
+const Header = () => {
 	const { open, abrirSidebar } = React.useContext(LayoutContext);
 
 	const router = useRouter();
@@ -22,7 +22,7 @@ const Header = ({ props }) => {
 	const { data, loading, error, client } = useQuery(OBTENER_USUARIO);
 
 	if (error) {
-		return <p>Error: {error.message}</p>;
+		return <p>{error.message}</p>;
 	}
 
 	const user = data?.obtenerUsuario;
@@ -53,6 +53,7 @@ const Header = ({ props }) => {
 
 			<button
 				type="button"
+				aria-label="Cerrar Sesion"
 				className="hidden sm:flex justify-center bg-blue-800 hover:bg-blue-600 w-full sm:w-auto font-bold uppercase text-xs rounded p-2 text-white shadow-md mt-2 sm:mt-0"
 				onClick={() => cerrarSesion()}
 			>
@@ -75,6 +76,7 @@ const Header = ({ props }) => {
 
 			<button
 				type="button"
+				aria-label="Abrir Menu"
 				className={`inline-flex sm:hidden text-gray-800 border-gray-800 border-[1px] rounded p-2 shadow-md duration-300 ${open && "scale-0"}`}
 				onClick={abrirSidebar}
 			>

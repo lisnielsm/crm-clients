@@ -1,151 +1,179 @@
-import React from 'react';
-import { render, screen, fireEvent } from '@testing-library/react';
-import { gql } from '@apollo/client';
+/**
+ * @jest-environment jsdom
+ */
 
-const OBTENER_USUARIO = gql`
-    query obtenerUsuario {
-        obtenerUsuario {
-            id
-            nombre
-            apellido
-        }
-    }
-`;
+import React from "react";
+import '@testing-library/jest-dom';
+import { render, screen, fireEvent } from "@testing-library/react";
 
-describe('Test Header component', () => {
+import Header from "../../components/Header";
 
-    // Successfully fetches user data
-    it('should fetch user data successfully', () => {
-      // Mock the useQuery hook
-      const mockData = {
-        obtenerUsuario: {
-          id: '1',
-          nombre: 'John',
-          apellido: 'Doe'
-        }
-      };
-      const mockUseQuery = jest.fn(() => ({ data: mockData, loading: false, error: null }));
-      jest.mock('@apollo/client', () => ({
-        gql: jest.fn(),
-        useQuery: mockUseQuery
-      }));
+describe("Test Header component", () => {
+  // Mock the LayoutContext
+  const mockLayoutContext = {
+    open: false,
+    abrirSidebar: jest.fn(),
+  };
 
-      // Render the component and assert
-      render(<Header />);
-      expect(mockUseQuery).toHaveBeenCalledWith(OBTENER_USUARIO);
-      expect(screen.getByText('Hola John Doe')).toBeInTheDocument();
-    });
+  // Mock the useRouter hook
+  const mockRouter = {
+    push: jest.fn(),
+  };
 
-    // Redirects to login page if user is not logged in
-    it('should redirect to login page if user is not logged in', () => {
-      // Mock the useQuery hook
-      const mockUseQuery = jest.fn(() => ({ data: null, loading: false, error: null }));
-      jest.mock('@apollo/client', () => ({
-        gql: jest.fn(),
-        useQuery: mockUseQuery
-      }));
+	// Renders logout button if user is logged in
+	it("should render logout button when user is logged in", () => {
+		jest.spyOn(React, "useContext").mockReturnValue(mockLayoutContext);
+		jest.spyOn(require("next/router"), "useRouter").mockReturnValue(
+			mockRouter
+		);
 
-      // Mock the useRouter hook
-      const mockRouter = { push: jest.fn() };
-      jest.mock('next/router', () => ({
-        useRouter: () => mockRouter
-      }));
+		// Mock the useQuery hook
+		const mockData = {
+			obtenerUsuario: {
+				id: 1,
+				nombre: "John",
+				apellido: "Doe",
+			},
+		};
+		const mockUseQuery = jest.fn().mockReturnValue({
+			data: mockData,
+			loading: false,
+			error: null,
+			client: {
+				clearStore: jest.fn(),
+			},
+		});
+		jest.spyOn(require("@apollo/client"), "useQuery").mockImplementation(
+			mockUseQuery
+		);
 
-      // Render the component and assert
-      render(<Header />);
-      expect(mockRouter.push).toHaveBeenCalledWith('/login');
-    });
+		// Render the component
+		render(<Header />);
 
-    // Returns an error if there is an issue fetching user data
-    it('should return an error if there is an issue fetching user data', () => {
-      // Mock the useQuery hook
-      const mockError = new Error('Failed to fetch user data');
-      const mockUseQuery = jest.fn(() => ({ data: null, loading: false, error: mockError }));
-      jest.mock('@apollo/client', () => ({
-        gql: jest.fn(),
-        useQuery: mockUseQuery
-      }));
+		// Assert
+		expect(screen.getByText("Cerrar Sesión")).toBeInTheDocument();
+	});
 
-      // Render the component and assert
-      render(<Header />);
-      expect(screen.getByText('Failed to fetch user data')).toBeInTheDocument();
-    });
+	// Opens sidebar when sidebar button is clicked
+	it("should open sidebar when sidebar button is clicked", () => {
+		jest.spyOn(React, "useContext").mockReturnValue(mockLayoutContext);
+		jest.spyOn(require("next/router"), "useRouter").mockReturnValue(
+			mockRouter
+		);
 
-    // Redirects to login page if user data is not returned and loading is false
-    it('should redirect to login page if user data is not returned and loading is false', () => {
-      // Mock the useQuery hook
-      const mockUseQuery = jest.fn(() => ({ data: null, loading: false, error: null }));
-      jest.mock('@apollo/client', () => ({
-        gql: jest.fn(),
-        useQuery: mockUseQuery
-      }));
+		// Mock the useQuery hook
+		const mockData = {
+			obtenerUsuario: {
+				id: 1,
+				nombre: "John",
+				apellido: "Doe",
+			},
+		};
+		const mockUseQuery = jest.fn().mockReturnValue({
+			data: mockData,
+			loading: false,
+			error: null,
+			client: {
+				clearStore: jest.fn(),
+			},
+		});
+		jest.spyOn(require("@apollo/client"), "useQuery").mockImplementation(
+			mockUseQuery
+		);
 
-      // Mock the useRouter hook
-      const mockRouter = { push: jest.fn() };
-      jest.mock('next/router', () => ({
-        useRouter: () => mockRouter
-      }));
+		// Render the component
+		render(<Header />);
 
-      // Render the component and assert
-      render(<Header />);
-      expect(mockRouter.push).toHaveBeenCalledWith('/login');
-    });
+		// Click the sidebar button
+		fireEvent.click(screen.getByRole("button", { name: /abrir menu/i }));
 
-    // Displays user's first and last name if user data is returned
-    it('should display user\'s first and last name if user data is returned', () => {
-      // Mock the useQuery hook
-      const mockData = {
-        obtenerUsuario: {
-          id: '1',
-          nombre: 'John',
-          apellido: 'Doe'
-        }
-      };
-      const mockUseQuery = jest.fn(() => ({ data: mockData, loading: false, error: null }));
-      jest.mock('@apollo/client', () => ({
-        gql: jest.fn(),
-        useQuery: mockUseQuery
-      }));
+		// Assert
+		expect(mockLayoutContext.abrirSidebar).toHaveBeenCalled();
+	});
 
-      // Render the component and assert
-      render(<Header />);
-      expect(screen.getByText('Hola John Doe')).toBeInTheDocument();
-    });
+	// Redirects to login page if user is not logged in
+	it("should redirect to login page if user is not logged in", () => {
+		jest.spyOn(React, "useContext").mockReturnValue(mockLayoutContext);
+		jest.spyOn(require("next/router"), "useRouter").mockReturnValue(
+			mockRouter
+		);
 
-    // Removes token from local storage when logging out
-    it('should remove token from local storage when logging out', () => {
-      // Mock the useQuery hook
-      const mockData = {
-        obtenerUsuario: {
-          id: '1',
-          nombre: 'John',
-          apellido: 'Doe'
-        }
-      };
-      const mockUseQuery = jest.fn(() => ({ data: mockData, loading: false, error: null }));
-      jest.mock('@apollo/client', () => ({
-        gql: jest.fn(),
-        useQuery: mockUseQuery
-      }));
+		// Mock the useQuery hook
+		const mockUseQuery = jest.fn().mockReturnValue({
+			data: null,
+			loading: false,
+			error: null,
+			client: {
+				clearStore: jest.fn(),
+			},
+		});
+		jest.spyOn(require("@apollo/client"), "useQuery").mockImplementation(
+			mockUseQuery
+		);
 
-      // Mock the localStorage object
-      const mockRemoveItem = jest.fn();
-      Object.defineProperty(window, 'localStorage', {
-        value: { removeItem: mockRemoveItem }
-      });
+		// Render the component
+		render(<Header />);
 
-      // Mock the useRouter hook
-      const mockRouter = { push: jest.fn() };
-      jest.mock('next/router', () => ({
-        useRouter: () => mockRouter
-      }));
+		// Assert
+		expect(mockRouter.push).toHaveBeenCalledWith("/login");
+	});
 
-      // Render the component and trigger logout
-      render(<Header />);
-      fireEvent.click(screen.getByText('Cerrar Sesión'));
+	// Renders error message if there is an error obtaining user data
+	it("should render error message if there is an error obtaining user data", () => {
+		jest.spyOn(React, "useContext").mockReturnValue(mockLayoutContext);
+  	jest.spyOn(require("next/router"), "useRouter").mockReturnValue(
+			mockRouter
+		);
 
-      // Assert
-      expect(mockRemoveItem).toHaveBeenCalledWith('token');
-      expect(mockRouter.push).toHaveBeenCalledWith('/login');
-    });
+		// Mock the useQuery hook
+		const mockError = new Error("Usuario no válido");
+		const mockUseQuery = jest.fn().mockReturnValue({
+			data: null,
+			loading: false,
+			error: mockError,
+			client: {
+				clearStore: jest.fn(),
+			},
+		});
+		jest.spyOn(require("@apollo/client"), "useQuery").mockImplementation(
+			mockUseQuery
+		);
+
+		// Render the component
+		render(<Header />);
+
+		// Assert
+		expect(
+			screen.getByText("Usuario no válido")
+		).toBeInTheDocument();
+	});
+
+	// Renders error message if user data is not obtained and loading is finished
+	it("should render error message if user data is not obtained and loading is finished", () => {
+		jest.spyOn(React, "useContext").mockReturnValue(mockLayoutContext);
+		jest.spyOn(require("next/router"), "useRouter").mockReturnValue(
+			mockRouter
+		);
+
+		// Mock the useQuery hook
+		const mockUseQuery = jest.fn().mockReturnValue({
+			data: null,
+			loading: false,
+			error: null,
+			client: {
+				clearStore: jest.fn(),
+			},
+		});
+		jest.spyOn(require("@apollo/client"), "useQuery").mockImplementation(
+			mockUseQuery
+		);
+
+		// Render the component
+		render(<Header />);
+
+		// Assert
+		expect(
+			screen.getByText("No se pudo obtener la información del usuario.")
+		).toBeInTheDocument();
+	});
 });
