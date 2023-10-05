@@ -104,7 +104,7 @@ const NuevoCliente = () => {
 				);
 
 				// Redireccionar hacia clientes
-				router.push("/");
+				router.push("/clientes");
 			} catch (error) {
 				setMensaje(error.message.replace("GraphQL error: ", ""));
 				setTipoMensaje("error");

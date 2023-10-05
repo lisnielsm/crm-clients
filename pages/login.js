@@ -64,7 +64,7 @@ const Login = () => {
 				setTimeout(() => {
 					setMensaje(null);
 					setTipoMensaje("");
-					router.push("/");
+					router.push("/clientes");
 				}, 2000);
 			} catch (error) {
 				setMensaje(error.message.replace("GraphQL error: ", ""));

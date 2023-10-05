@@ -61,7 +61,7 @@ const Sidebar = () => {
 					<div className="mt-5 list-none">
 						<li
 							className={
-								router.pathname === "/"
+								router.pathname === "/clientes"
 									? "bg-blue-800 rounded-md mb-2"
 									: "rounded-md mb-2 hover:bg-blue-800"
 							}
@@ -69,7 +69,7 @@ const Sidebar = () => {
 							<button
 								type="button"
 								className="text-white w-full text-left p-2"
-								onClick={() => navegarAlLink("/")}
+								onClick={() => navegarAlLink("/clientes")}
 							>
 								<span>Clientes</span>
 							</button>

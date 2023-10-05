@@ -95,7 +95,7 @@ const EditarCliente = () => {
 			);
 
 			// Redireccionar
-			router.push("/");
+			router.push("/clientes");
 		} catch (error) {
 			console.log(error);
 			setMensaje("Hubo un error al actualizar el cliente");
@@ -283,7 +283,7 @@ const EditarCliente = () => {
 										<button
 											type="button"
 											className="w-full text-gray-600 p-2 border-2 rounded uppercase font-bold hover:bg-gray-200"
-											onClick={() => router.push("/")}
+											onClick={() => router.push("/clientes")}
 										>
 											Regresar
 										</button>
