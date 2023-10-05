@@ -1,14 +1,15 @@
 import { gql, useMutation, useQuery } from "@apollo/client";
 import { useRouter } from "next/router";
-import React, { useContext } from "react";
+import React from "react";
 import Swal from "sweetalert2";
+import { useDispatch, useSelector } from "react-redux";
 
 import Layout from "../components/Layout";
 import AsignarCliente from "../components/pedidos/AsignarCliente";
 import AsignarProductos from "../components/pedidos/AsignarProductos";
 import ResumenPedido from "../components/pedidos/ResumenPedido";
 import Total from "../components/pedidos/Total";
-import PedidoContext from "../context/pedidos/PedidoContext";
+import { cliente, productos, total, limpiarPedido } from "../slices/pedidoSlice";
 
 const NUEVO_PEDIDO = gql`
 	mutation nuevoPedido($input: PedidoInput) {
@@ -43,12 +44,12 @@ const OBTENER_PEDIDOS = gql`
 
 const NuevoPedido = () => {
 	const router = useRouter();
+	const dispatch = useDispatch();
+	const client = useSelector(cliente);
+	const products = useSelector(productos);
+	const currentTotal = useSelector(total);
 
 	const [mensaje, setMensaje] = React.useState(null);
-
-	// utilizar context y extraer sus valores
-	const pedidoContext = useContext(PedidoContext);
-	const { cliente, productos, total, limpiarPedido } = pedidoContext;
 
 	// Query para obtener los pedidos
 	const { data } = useQuery(OBTENER_PEDIDOS);
@@ -73,18 +74,18 @@ const NuevoPedido = () => {
 	});
 
 	const validarPedido = () => {
-		return !productos.every((producto) => producto.cantidad > 0) ||
-			cliente.length === 0 ||
-			total === 0
+		return !products.every((producto) => producto.cantidad > 0) ||
+			client.length === 0 ||
+			currentTotal === 0
 			? "opacity-50 cursor-not-allowed"
 			: "";
 	};
 
 	const crearNuevoPedido = async () => {
-		const { id } = cliente;
+		const { id } = client;
 
 		// Remover lo no deseado de productos
-		const pedido = productos.map(
+		const pedido = products.map(
 			({ __typename, existencia, ...producto }) => producto
 		);
 
@@ -93,7 +94,7 @@ const NuevoPedido = () => {
 				variables: {
 					input: {
 						cliente: id,
-						total,
+						total: currentTotal,
 						pedido,
 					},
 				},
@@ -117,7 +118,7 @@ const NuevoPedido = () => {
 	};
 
 	const onBackClick = () => {
-		limpiarPedido();
+		dispatch(limpiarPedido());
 		router.push("/pedidos");
 	};
 

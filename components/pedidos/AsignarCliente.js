@@ -1,8 +1,9 @@
 import { gql, useQuery } from "@apollo/client";
-import React, { useContext } from "react";
+import React from "react";
 import Select from "react-select";
+import { useDispatch } from "react-redux";
 
-import PedidoContext from "../../context/pedidos/PedidoContext";
+import { agregarCliente } from "../../slices/pedidoSlice";
 
 const OBTENER_CLIENTE_USUARIO = gql`
 	query obtenerClientesVendedor {
@@ -17,15 +18,14 @@ const OBTENER_CLIENTE_USUARIO = gql`
 `;
 
 const AsignarCliente = () => {
-    const pedidoContext = useContext(PedidoContext);
-    const { agregarCliente } = pedidoContext;
+    const dispatch = useDispatch();
 
-    const { data, loading, error } = useQuery(OBTENER_CLIENTE_USUARIO, {
+    const { data } = useQuery(OBTENER_CLIENTE_USUARIO, {
 		fetchPolicy: "cache-and-network",
 	});
 
 	const seleccionarCliente = (cliente) => {
-		agregarCliente(cliente);
+		dispatch(agregarCliente(cliente));
 	};
 
 	return (

@@ -1,8 +1,8 @@
 import { gql, useQuery } from "@apollo/client";
 import { useRouter } from "next/router";
 import React from "react";
-
-import LayoutContext from "../context/layout/LayoutContext";
+import { useDispatch, useSelector } from "react-redux";
+import { openMenuState, setOpenMenuState } from "../slices/layoutSlice";
 
 const OBTENER_USUARIO = gql`
 	query obtenerUsuario {
@@ -15,7 +15,8 @@ const OBTENER_USUARIO = gql`
 `;
 
 const Header = () => {
-	const { open, abrirSidebar } = React.useContext(LayoutContext);
+	const dispatch = useDispatch();
+	const open = useSelector(openMenuState);
 
 	const router = useRouter();
 
@@ -77,8 +78,8 @@ const Header = () => {
 			<button
 				type="button"
 				aria-label="Abrir Menu"
-				className={`inline-flex sm:hidden text-gray-800 border-gray-800 border-[1px] rounded p-2 shadow-md duration-300 ${open && "scale-0"}`}
-				onClick={abrirSidebar}
+				className={`inline-flex sm:hidden text-gray-800 border-gray-800 border-[1px] rounded p-2 shadow-md duration-300 ${open && "scale-0" }`}
+				onClick={() => dispatch(setOpenMenuState(true))}
 			>
 				<svg
 					xmlns="http://www.w3.org/2000/svg"

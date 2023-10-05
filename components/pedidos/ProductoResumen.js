@@ -1,17 +1,17 @@
-import React, { useContext } from 'react';
+import React from 'react';
+import { useDispatch } from 'react-redux';
 
-import PedidoContext from "../../context/pedidos/PedidoContext";
+import { cantidadProductos, actualizarTotal } from '../../slices/pedidoSlice';
 
 const ProductoResumen = ({producto}) => {
-    const pedidoContext = useContext(PedidoContext);
-    const { cantidadProductos, actualizarTotal } = pedidoContext;
+    const dispatch = useDispatch();
 
     const { nombre, precio } = producto;
 
     const actualizarCantidad = (e) => {
         const nuevoProducto = {...producto, cantidad: Number(e.target.value)};
-        cantidadProductos(nuevoProducto);
-        actualizarTotal();
+        dispatch(cantidadProductos(nuevoProducto));
+        dispatch(actualizarTotal());
     }
 
     return ( 

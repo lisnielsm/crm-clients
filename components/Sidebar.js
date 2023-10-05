@@ -1,9 +1,8 @@
 import { gql, useQuery } from "@apollo/client";
-import Link from "next/link";
 import { useRouter } from "next/router";
 import React from "react";
-
-import LayoutContext from "../context/layout/LayoutContext";
+import { useDispatch, useSelector } from "react-redux";
+import { openMenuState, setOpenMenuState } from "../slices/layoutSlice";
 
 const OBTENER_USUARIO = gql`
 	query obtenerUsuario {
@@ -16,7 +15,8 @@ const OBTENER_USUARIO = gql`
 `;
 
 const Sidebar = () => {
-	const { open, cerrarSidebar } = React.useContext(LayoutContext);
+	const dispatch = useDispatch();
+	const open = useSelector(openMenuState);
 
 	// Routing de next
 	const router = useRouter();
@@ -31,7 +31,7 @@ const Sidebar = () => {
 	};
 
 	const navegarAlLink = (link) => {
-		cerrarSidebar();
+		dispatch(setOpenMenuState(false));
 		setTimeout(() => {
 			router.push(link);
 		}, 300);
@@ -51,7 +51,7 @@ const Sidebar = () => {
 						strokeWidth={1.5}
 						stroke="currentColor"
 						className="w-7 h-7 inline-block sm:hidden cursor-pointer"
-						onClick={cerrarSidebar}
+						onClick={() => dispatch(setOpenMenuState(false))}
 					>
 						<path strokeLinecap="round" d="M6 18L18 6M6 6l12 12" />
 					</svg>
@@ -183,7 +183,7 @@ const Sidebar = () => {
 			{opcionesMenu()}
 		</aside>
 		<aside
-			className={`hidden sm:block h-full w-full sm:min-w-[250px] sm:w-[250px] bg-gray-800  text-white sm:min-h-screen p-5`}
+			className={`hidden sm:block h-full sm:h-auto w-full sm:min-w-[250px] sm:w-[250px] bg-gray-800  text-white sm:min-h-screen p-5`}
 		>
 			{opcionesMenu()}
 		</aside>

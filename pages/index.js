@@ -1,3 +1,4 @@
+import React from 'react';
 import { gql, useQuery } from "@apollo/client";
 import Link from "next/link";
 import { useRouter } from "next/router";

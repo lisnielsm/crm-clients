@@ -1,11 +1,11 @@
-import React, { useContext } from "react";
+import React from "react";
+import { useSelector } from "react-redux";
 
-import PedidoContext from "../../context/pedidos/PedidoContext";
+import { productos } from "../../slices/pedidoSlice"; 
 import ProductoResumen from "./ProductoResumen";
 
 const ResumenPedido = () => {
-	const pedidoContext = useContext(PedidoContext);
-	const { productos } = pedidoContext;
+	const products = useSelector(productos);
 
 	return (
 		<>
@@ -13,8 +13,8 @@ const ResumenPedido = () => {
 				3.- Ajusta las cantidades del producto
 			</p>
 
-			{productos.length > 0 ? (
-				productos.map((producto) => (
+			{products.length > 0 ? (
+				products.map((producto) => (
 					<ProductoResumen key={producto.id} producto={producto} />
 				))
 			) : (

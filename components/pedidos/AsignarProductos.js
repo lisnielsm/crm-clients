@@ -1,8 +1,9 @@
 import { gql, useQuery } from "@apollo/client";
-import React, { useContext } from "react";
+import React from "react";
 import Select from "react-select";
+import { useDispatch } from "react-redux";
 
-import PedidoContext from "../../context/pedidos/PedidoContext";
+import { agregarProductos } from "../../slices/pedidoSlice";
 
 const OBTENER_PRODUCTOS = gql`
 	query obtenerProductos {
@@ -16,10 +17,9 @@ const OBTENER_PRODUCTOS = gql`
 `;
 
 const AsignarProductos = () => {
-	const pedidoContext = useContext(PedidoContext);
-	const { agregarProductos } = pedidoContext;
+	const dispatch = useDispatch();
 
-	const { data, loading, error } = useQuery(OBTENER_PRODUCTOS, {
+	const { data } = useQuery(OBTENER_PRODUCTOS, {
 		fetchPolicy: "cache-and-network",
 	});
 
@@ -29,7 +29,7 @@ const AsignarProductos = () => {
 			cantidad: 0,
 		}));
 
-		agregarProductos(nuevosProductos);
+		dispatch(agregarProductos(nuevosProductos));
 	};
 
 	return (

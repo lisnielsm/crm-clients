@@ -1,18 +1,17 @@
+import React from "react";
 import { ApolloProvider } from "@apollo/client";
 import "tailwindcss/tailwind.css";
 import client from "../config/apollo";
-import LayoutState from "../context/layout/LayoutState";
-import PedidoState from "../context/pedidos/PedidoState";
+import { store } from "../store";
+import { Provider } from "react-redux";
 
 function MyApp({ Component, pageProps }) {
 	return (
-		<ApolloProvider client={client}>
-			<LayoutState>
-				<PedidoState>
-					<Component {...pageProps} />
-				</PedidoState>
-			</LayoutState>
-		</ApolloProvider>
+		<Provider store={store}>
+			<ApolloProvider client={client}>
+				<Component {...pageProps} />
+			</ApolloProvider>
+		</Provider>
 	);
 }
 
