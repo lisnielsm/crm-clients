@@ -1,6 +1,7 @@
 import { gql, useQuery } from "@apollo/client";
 import { useRouter } from "next/router";
 import React from "react";
+
 import { useDispatch, useSelector } from "react-redux";
 import { openMenuState, setOpenMenuState } from "../slices/layoutSlice";
 
@@ -32,10 +33,10 @@ const Header = () => {
 		router.push("/login");
 	}
 
-	const cerrarSesion = async () => {
+	const cerrarSesion = () => {
 		localStorage.removeItem("token");
 		// Borra la cache en el servidor del cliente logueado
-		await client.clearStore();
+		client.clearStore();
 		router.push("/login");
 	};
 
@@ -56,7 +57,7 @@ const Header = () => {
 				type="button"
 				aria-label="Cerrar Sesion"
 				className="hidden sm:flex justify-center bg-blue-800 hover:bg-blue-600 w-full sm:w-auto font-bold uppercase text-xs rounded p-2 text-white shadow-md mt-2 sm:mt-0"
-				onClick={() => cerrarSesion()}
+				onClick={cerrarSesion}
 			>
 				<svg
 					xmlns="http://www.w3.org/2000/svg"
@@ -78,7 +79,9 @@ const Header = () => {
 			<button
 				type="button"
 				aria-label="Abrir Menu"
-				className={`inline-flex sm:hidden text-gray-800 border-gray-800 border-[1px] rounded p-2 shadow-md duration-300 ${open && "scale-0" }`}
+				className={`inline-flex sm:hidden text-gray-800 border-gray-800 border-[1px] rounded p-2 shadow-md duration-300 ${
+					open && "scale-0"
+				}`}
 				onClick={() => dispatch(setOpenMenuState(true))}
 			>
 				<svg

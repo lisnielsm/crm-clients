@@ -32,10 +32,6 @@ const Pedido = ({ pedido }) => {
         cliente,
 	} = pedido;
 
-	if(!cliente) return null;
-
-	const { nombre, apellido, email, telefono } = cliente;
-
 	const [estadoPedido, setEstadoPedido] = useState(estado);
 	const [clase, setClase] = useState("");
 
@@ -60,7 +56,12 @@ const Pedido = ({ pedido }) => {
 
 	useEffect(() => {
 		cambiarColor(estadoPedido);
+	// eslint-disable-next-line react-hooks/exhaustive-deps
 	}, []);
+
+	if(!cliente) return null;
+
+	const { nombre, apellido, email, telefono } = cliente;
 
 	// Función que modifica el color del pedido de acuerdo a su estado
 	const cambiarColor = (nuevoEstadoPedido) => {
